@@ -1,0 +1,12 @@
+<%= form_tag sessions_path do %>
+  <div class="field">
+   <%= f.label_tag :email %><br />
+  <%= email_field_tag :email, params[:email] %>
+ </div>
+
+<div class="field">
+  <%= label_tag :password %><br />
+  <%= password_field_tag :password %>
+</div>
+  <%= submit_tag "Log in", data: { confirm: "Are you sure?" } %>
+<% end %>

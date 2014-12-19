@@ -1,0 +1,29 @@
+<div>
+    <h4> Your name : <%= @user.full_name %></h4>
+</div>
+
+<div>
+    <h4> User email is : <%= @user.email %></h4>
+</div>
+
+<div>
+    <h4> User country is : <%= @user.phone_number %> </h4>
+</div>
+
+
+<div>
+    <h4> User is referred by : <%= @user.refer_by %> </h4>
+</div>
+
+
+
+
+
+<div>
+    <h4> Users you have refer(Downlines) <b>(<%= @user.refers.count %>)</b>  :  </h4>
+  <ul>
+    <% for user in @user.refers %>
+    <li> <%= user.full_name %> </li>
+    <% end %>
+  </ul>
+</div>

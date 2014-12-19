@@ -1,0 +1,26 @@
+<% if @users.present? %>
+<table>
+    <tr>
+        <th> Name </th>
+        <th> Email</th>
+        <th> Country</th>
+    </tr>
+
+
+    <% @users.each do |user| %>
+    <tr>
+        <td> <%= user.first_name %> </td>
+        <td> <%= user.email %> </td>
+        <td> <%= user.phone_number %> </td>
+        <td> <%= link_to 'edit', edit_user_path(user) %> </td>
+        <td> <%= link_to 'show', user %> </td>
+    </tr>
+
+    <% end %>
+
+</table>
+<% else %>
+  <h4> Sorry, No Users found. </h4>
+<% end %>
+
+<%= link_to 'create a new', new_user_path %>

@@ -1,0 +1,55 @@
+<h2>Sign up</h2>
+
+<%= form_for(@user) do |f| %>
+<ul>
+<% @user.errors.full_messages.each do |msg| %>
+  <li><%= msg %></li>
+<% end %>
+</ul>
+  <div class="field">
+    <%= f.label :first_name %><br />
+    <%= f.text_field :first_name, autofocus: true %>
+  </div>
+
+   <div class="field">
+    <%= f.label :last_name %><br />
+    <%= f.text_field :last_name, autofocus: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.text_field :email, autofocus: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :phone_number %><br />
+    <%= f.text_field :phone_number, autofocus: true %>
+  </div>
+
+
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password, autofocus: false,  autocomplete: false %>
+  </div>
+
+ <div class="field">
+    <%= f.label :password_comfirmation %><br />
+    <%= f.password_field :password_comfirmation, autofocus: false,  autocomplete: false %>
+  </div>
+
+
+   <div class="field">
+    <% unless params[:referral].present? %>
+         <%= f.collection_select :refer_id, @registereds, :id, :first_name %>
+     <% else %>
+         <h2>You have been Referred by :</h2>
+         <%= f.hidden_field :refer_id, :value => params[:referral] %>
+        <h3> <%= User.find(params[:referral]).full_name %></h3>
+     <% end %>
+  </div>
+
+
+  <div class="actions">
+    <%= f.submit "Sign up" %>
+  </div>
+<% end %>
