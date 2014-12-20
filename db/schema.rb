@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141219085416) do
+ActiveRecord::Schema.define(version: 20141219151903) do
 
   create_table "users", force: true do |t|
     t.string   "name"
@@ -28,7 +28,9 @@ ActiveRecord::Schema.define(version: 20141219085416) do
     t.string   "auth_token"
     t.string   "password_reset_token"
     t.datetime "password_reset_sent_at"
-    t.boolean  "registration_complete",  default: false
+    t.boolean  "registration_complete",      default: false
+    t.string   "confirmation_token"
+    t.date     "confirmation_token_send_at"
   end
 
 end

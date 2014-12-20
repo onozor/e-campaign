@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
   before_filter :set_user, only: [:edit, :update, :show, :destroy]
   before_filter :get_referres, only: [:new, :create, :edit]
-  before_action :authenticate_user!, except:[:new, :create]
-  #before_filter :authorise_user, only: [:show]
+  before_action :authenticate_user!, :except =>  [:new, :create, :set_complete]
+
 
   def new
     @user = User.new
@@ -11,13 +11,17 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      UserMailer.registration_confirmation(@user, login_url+"/#{@user.auth_token}").deliver
+      @user.send_confirmation_link if @user
+      session[:user_id] = nil
       flash[:success] = "Please Check Your Email to Verify your Registration!"
-      redirect_to root_path
+      redirect_to new_session_path
     else
       render :new
     end
   end
+
+
+
 
   def edit
   end
@@ -31,6 +35,17 @@ class UsersController < ApplicationController
   end
 
   def show
+  end
+
+  def set_complete
+    user = User.find_by_confirmation_token!(params[:id])
+    if user
+    user.update_attribute(:registration_complete, true)
+    redirect_to new_session_path, notice: "Your Account has been confirmed!"
+    else
+     flash.now.alert ="oops! unable to comfirm you account"
+      render 'sessions/new'
+    end
   end
 
   def get_referres
@@ -51,8 +66,10 @@ class UsersController < ApplicationController
     end
   end
 
+
+
   def user_params
-      params.require(:user).permit(:first_name, :last_name, :phone_number,  :email, :password, :password_confirmation, :password_digest, :refer_id)
+      params.require(:user).permit(:first_name, :last_name, :phone_number,  :email, :password, :password_confirmation, :password_digest, :refer_id, :conformation_token)
   end
 
 end

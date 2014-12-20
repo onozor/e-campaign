@@ -45,6 +45,13 @@ class User < ActiveRecord::Base
        UserMailer.password_reset(self).deliver
      end
 
+     def send_confirmation_link
+       generate_token(:confirmation_token)
+       self.confirmation_token_send_at = Time.zone.now
+       save!
+       UserMailer.registration_confirmation(self).deliver
+     end
+
      def generate_token(column)
        begin
          self[column] = SecureRandom.urlsafe_base64
@@ -55,7 +62,14 @@ class User < ActiveRecord::Base
    increment! :sign_in_count
   end
 
-  def full_name
+
+     def verify!
+       self.registration_complete = true
+       self.save
+     end
+
+
+     def full_name
     self.first_name + " " + self.last_name
   end
 
